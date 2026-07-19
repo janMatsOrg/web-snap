@@ -1,0 +1,285 @@
+/*
+ * shared/clean.css — Web Snap global CSS overrides + Infinity Gauntlet UI
+ *
+ * Applied to all *.gov.in and *.nic.in pages via manifest.json.
+ * All rules are cosmetic — no layout-breaking changes.
+ *
+ * Sections
+ *   1. Typography baseline
+ *   2. Suppressed clutter (marquees, blinks, plugin prompts)
+ *   3. Link normalisation
+ *   4. Table readability (pre-UX4G fallback)
+ *   5. Form elements (pre-UX4G fallback)
+ *   6. Scrollbar (WebKit)
+ *   7. Gauntlet button UI
+ *   8. Print
+ */
+
+
+/* ─── 1. Typography baseline ─────────────────────────────────────────────────── */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+               'Helvetica Neue', Arial, sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  color: #1a1a1a !important;
+  background-color: #f8f8f8 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: inherit !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.01em;
+}
+
+p, li, td, th, label, span {
+  font-family: inherit !important;
+  line-height: 1.6 !important;
+}
+
+
+/* ─── 2. Suppressed clutter ──────────────────────────────────────────────────── */
+
+marquee              { animation: none !important; }
+blink,
+[style*="blink"]     { animation: none !important; text-decoration: none !important; }
+
+embed[type="audio/mpeg"],
+object[type="audio/mpeg"],
+audio[autoplay],
+.plugin-install-prompt,
+.flash-fallback,
+[class*="flash-notice"] { display: none !important; }
+
+
+/* ─── 3. Link normalisation ──────────────────────────────────────────────────── */
+
+a         { color: #1a237e !important; text-decoration: none !important; }
+a:hover   { text-decoration: underline !important; color: #283593 !important; }
+a:visited { color: #4527a0 !important; }
+
+
+/* ─── 4. Table readability (pre-UX4G fallback) ──────────────────────────────── */
+
+table { border-collapse: collapse !important; width: 100% !important; }
+
+th {
+  background-color: #ede7f6 !important;
+  color: #311b92 !important;
+  font-weight: 600 !important;
+  padding: 10px 12px !important;
+  text-align: left !important;
+}
+
+td {
+  padding: 8px 12px !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  vertical-align: top !important;
+}
+
+tr:nth-child(even) td { background-color: #f3f0fa !important; }
+
+
+/* ─── 5. Form elements (pre-UX4G fallback) ───────────────────────────────────── */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+select, textarea {
+  font-family: inherit !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  border: 1px solid #b0bec5 !important;
+  border-radius: 4px !important;
+  padding: 6px 10px !important;
+  background-color: #fff !important;
+  color: #1a1a1a !important;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #673ab7 !important;
+  box-shadow: 0 0 0 3px rgba(103,58,183,0.15) !important;
+}
+
+button, input[type="submit"], input[type="button"] {
+  font-family: inherit !important;
+  cursor: pointer;
+}
+
+
+/* ─── 6. Scrollbar (WebKit) ──────────────────────────────────────────────────── */
+
+::-webkit-scrollbar              { width: 8px; height: 8px; }
+::-webkit-scrollbar-track        { background: #f1f1f1; }
+::-webkit-scrollbar-thumb        { background: #b39ddb; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover  { background: #7e57c2; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   7. Gauntlet button UI
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Container ────────────────────────────────────────────────────────────────── */
+
+#web-snap-container {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 1000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  animation: gauntlet-entrance 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes gauntlet-entrance {
+  from { opacity: 0; transform: translateX(60px) scale(0.8); }
+  to   { opacity: 1; transform: translateX(0)    scale(1); }
+}
+
+#web-snap-container:hover        { transform: translateY(-4px); transition: transform 0.2s ease; }
+#web-snap-container[aria-disabled="true"] { cursor: default; pointer-events: none; }
+
+/* ── Glow ring ────────────────────────────────────────────────────────────────── */
+
+#web-snap-ring {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 72px; height: 72px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(103,58,183,0.45) 0%, transparent 70%);
+  pointer-events: none;
+  animation: ring-idle-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes ring-idle-pulse {
+  0%, 100% { opacity: 0.55; transform: translateX(-50%) scale(1); }
+  50%       { opacity: 0.95; transform: translateX(-50%) scale(1.28); }
+}
+
+/* ── Gauntlet sprite ──────────────────────────────────────────────────────────── */
+
+#web-snap-gauntlet {
+  position: relative;
+  z-index: 1;
+  width: 80px; height: 80px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  filter: drop-shadow(0 5px 12px rgba(103,58,183,0.65));
+  animation: gauntlet-bob 3.2s ease-in-out infinite;
+  transition: filter 0.2s ease;
+}
+
+#web-snap-container:hover #web-snap-gauntlet {
+  filter: drop-shadow(0 8px 22px rgba(103,58,183,0.92)) brightness(1.12);
+}
+
+@keyframes gauntlet-bob {
+  0%, 100% { transform: translateY(0)    rotate(0deg); }
+  35%       { transform: translateY(-6px) rotate(-2.5deg); }
+  65%       { transform: translateY(-3px) rotate(1deg); }
+}
+
+/* ── Snap flash (sprite drives the visual; CSS adds white-light burst) ────────── */
+
+#web-snap-gauntlet.snapping {
+  animation: snap-flash 0.55s ease-out forwards;
+}
+
+@keyframes snap-flash {
+  0%   { filter: drop-shadow(0 5px 12px rgba(103,58,183,0.65)) brightness(1); }
+  25%  { filter: drop-shadow(0 0 28px #fff) drop-shadow(0 0 12px rgba(232,213,255,1)) brightness(2.4); }
+  100% { filter: drop-shadow(0 5px 12px rgba(103,58,183,0.65)) brightness(1); }
+}
+
+#web-snap-ring.snapping { animation: ring-snap-flash 0.6s ease-out forwards; }
+
+@keyframes ring-snap-flash {
+  0%   { opacity: 1; transform: translateX(-50%) scale(1);
+         background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%); }
+  40%  { opacity: 1; transform: translateX(-50%) scale(2.2); }
+  100% { opacity: 0; transform: translateX(-50%) scale(3); }
+}
+
+/* ── Time Stone state (post-snap, ready to restore) ──────────────────────────── */
+
+#web-snap-gauntlet.time-stone {
+  animation: gauntlet-bob 3.2s ease-in-out infinite,
+             time-stone-glow 2s ease-in-out infinite;
+}
+
+@keyframes time-stone-glow {
+  0%, 100% { filter: drop-shadow(0 0 10px #4caf50) drop-shadow(0 0 22px rgba(76,175,80,0.55)); }
+  50%       { filter: drop-shadow(0 0 18px #66bb6a) drop-shadow(0 0 44px rgba(102,187,106,0.85)) brightness(1.18); }
+}
+
+#web-snap-ring.time-stone {
+  background: radial-gradient(circle, rgba(76,175,80,0.5) 0%, transparent 70%);
+  animation: ring-time-stone-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ring-time-stone-pulse {
+  0%, 100% { opacity: 0.65; transform: translateX(-50%) scale(1); }
+  50%       { opacity: 1;    transform: translateX(-50%) scale(1.38); }
+}
+
+/* ── Reversing state ──────────────────────────────────────────────────────────── */
+
+#web-snap-gauntlet.reversing { animation: gauntlet-reverse-burst 0.55s ease-out forwards; }
+
+@keyframes gauntlet-reverse-burst {
+  0%   { transform: scale(1.2);  filter: drop-shadow(0 0 36px #b9f6ca) brightness(2.6); }
+  55%  { transform: scale(1.05); filter: drop-shadow(0 0 20px #4caf50)  brightness(1.6); }
+  100% { transform: scale(1);    filter: drop-shadow(0 5px 12px rgba(76,175,80,0.5)); }
+}
+
+#web-snap-ring.reversing { animation: ring-reverse-burst 0.7s ease-out forwards; }
+
+@keyframes ring-reverse-burst {
+  0%   { opacity: 1; transform: translateX(-50%) scale(1);
+         background: radial-gradient(circle, rgba(185,246,202,0.9) 0%, transparent 70%); }
+  100% { opacity: 0; transform: translateX(-50%) scale(3.5); }
+}
+
+/* ── Label pill ───────────────────────────────────────────────────────────────── */
+
+#web-snap-label {
+  background: #673ab7;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 20px;
+  box-shadow: 0 3px 10px rgba(103,58,183,0.5), 0 1px 4px rgba(0,0,0,0.2);
+  white-space: nowrap;
+  transition: background 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+  position: relative;
+  z-index: 1;
+}
+
+#web-snap-label.snapping  { background: #4a148c; box-shadow: 0 4px 16px rgba(74,20,140,0.75); }
+#web-snap-label.cleaned   { background: #37474f; color: #b2dfdb; box-shadow: 0 3px 10px rgba(55,71,79,0.6); }
+#web-snap-label.time-stone { background: #1b5e20; color: #b9f6ca; box-shadow: 0 3px 12px rgba(27,94,32,0.7), 0 0 18px rgba(76,175,80,0.4); }
+#web-snap-label.reversing  { background: #2e7d32; color: #fff;    box-shadow: 0 3px 16px rgba(46,125,50,0.85); }
+
+
+/* ─── 8. Print ───────────────────────────────────────────────────────────────── */
+
+@media print {
+  #web-snap-container { display: none !important; }
+  marquee             { display: block !important; }
+}

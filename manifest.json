@@ -1,0 +1,69 @@
+{
+  "manifest_version": 3,
+  "name": "Web Snap",
+  "version": "2.0.0",
+  "description": "Declutter and modernise Indian government websites (*.gov.in and *.nic.in) using the UX4G Design System.",
+  "icons": {
+    "16":  "assets/thanos_idle.png",
+    "48":  "assets/thanos_idle.png",
+    "128": "assets/thanos_idle.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.gov.in/*", "*://*.nic.in/*"],
+      "js":  ["shared/thanos.js", "shared/modernise.js", "shared/content.js"],
+      "css": ["shared/clean.css"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "*://epfindia.gov.in/*",
+        "*://www.epfindia.gov.in/*",
+        "*://unifiedportal-mem.epfindia.gov.in/*"
+      ],
+      "js": ["sites/epfo/cleaner.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "*://india.gov.in/*",
+        "*://www.india.gov.in/*"
+      ],
+      "js": ["sites/national-portal/cleaner.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "*://incometax.gov.in/*",
+        "*://www.incometax.gov.in/*",
+        "*://eportal.incometax.gov.in/*"
+      ],
+      "js": ["sites/income-tax/cleaner.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "*://passportindia.gov.in/*",
+        "*://www.passportindia.gov.in/*"
+      ],
+      "js": ["sites/passport/cleaner.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "*://uidai.gov.in/*",
+        "*://www.uidai.gov.in/*",
+        "*://myaadhaar.uidai.gov.in/*",
+        "*://resident.uidai.gov.in/*"
+      ],
+      "js": ["sites/uidai/cleaner.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*"],
+      "matches": ["*://*.gov.in/*", "*://*.nic.in/*"]
+    }
+  ]
+}
